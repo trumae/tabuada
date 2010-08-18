@@ -29,6 +29,7 @@ static double getFitExternal(Individuo *ind, int verbose){
   int i, pid;
   char buffer[1024];
   double result;
+  int ret;
 
   /* escreve dados para programa externo */
   if ((f = fopen("gen.ind", "wt")) == NULL){
@@ -56,7 +57,7 @@ static double getFitExternal(Individuo *ind, int verbose){
 
   strcpy(buffer, "./");
   strcat(buffer, programname);
-  system(buffer);
+  ret = system(buffer);
   
   /* Le dados gerados pelo programa externo*/
   if ((f = fopen("result.ind", "rt")) == NULL){
@@ -107,9 +108,9 @@ void fitexternal(Populacao *pop, int i1, int i2, int *champion, int *loser, int 
    }
 
    //if(! (count % 1000)) 
-      if (verbose ) fprintf(stderr,"%d %.2f %.2f\n", count++, nota1, melhornota);
+      if (verbose ) fprintf(stderr,"%ld %.2f %.2f\n", count++, nota1, melhornota);
    //if(! (count % 1000)) 
-      if (verbose) fprintf(stderr,"%d %.2f %.2f\n", count++, nota2, melhornota);
+      if (verbose) fprintf(stderr,"%ld %.2f %.2f\n", count++, nota2, melhornota);
 
    if(  nota1 >= nota2 ) {
       *champion = i1;

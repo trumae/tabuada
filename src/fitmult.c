@@ -74,9 +74,9 @@ void fitnessmult(Populacao *pop, int i1, int i2, int *champion, int *loser, int 
    }
 
    //if(! (count % 1000)) 
-      if (verbose ) fprintf(stderr,"%d %.2f %.2f\n", count++, nota1, melhornota);
+      if (verbose ) fprintf(stderr,"%ld %.2f %.2f\n", count++, nota1, melhornota);
    //if(! (count % 1000)) 
-      if (verbose) fprintf(stderr,"%d %.2f %.2f\n", count++, nota2, melhornota);
+      if (verbose) fprintf(stderr,"%ld %.2f %.2f\n", count++, nota2, melhornota);
 
    if(  nota1 >= nota2 ) {
       *champion = i1;

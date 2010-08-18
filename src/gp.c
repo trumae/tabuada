@@ -169,8 +169,8 @@ void fitnessinst(Populacao *pop, int i1, int i2, int *champion, int *loser, int 
       *loser = i1;
    }
   
-   if (verbose ) fprintf(stderr,"%d %d \n", count++, nota1);
-   if (verbose) fprintf(stderr,"%d %d \n", count++, nota2);
+   if (verbose ) fprintf(stderr,"%ld %d \n", count++, nota1);
+   if (verbose) fprintf(stderr,"%ld %d \n", count++, nota2);
 
 
 }
