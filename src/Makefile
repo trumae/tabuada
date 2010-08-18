@@ -1,6 +1,7 @@
-all: gp.c machine.c fitmult.c fitexternal.c
+all: core 
+
+core: gp.c machine.c fitmult.c fitexternal.c
 	gcc -O2 gp.c machine.c fitmult.c fitexternal.c -o gp
 
-
 clean:
-	rm -f gp *~ *.o
+	rm -f gp *~ *.o *.so
