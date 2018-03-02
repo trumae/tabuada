@@ -26,7 +26,7 @@ Run without changes, the gp program try synthesize a program that does the multi
 | JUMP   pc    | jump to instruction in position  pc                    |
 | RET          | stop the program                                       |
 
-* Example of output
+* Examples of output
 
 #+BEGIN_SRC 
 MOVE 2 0
@@ -37,6 +37,24 @@ JUMP 1
 MOVE 0 1
 JUMPZ 2 1
 MOVE 0 2
+RET
+#+END_SRC
+
+Another example (very strange/good):
+#+BEGIN_SRC 
+MOVE  2 0
+ADD   1 1
+MOVE  2 0
+JUMPZ 2 5
+SUBI  1 2
+JUMPZ 1 9
+SUBI  1 2
+ADD   0 2
+JUMP  5
+SUBI  1 3
+SUBI  2 12
+JUMPZ 0 3
+MOVE  2 0
 RET
 #+END_SRC
 
