@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <getopt.h>
-
+#include <time.h>
 
 #include "gp.h"
 #include "machine.h"
