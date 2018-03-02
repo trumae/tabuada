@@ -14,16 +14,17 @@ Run without changes, the gp program try synthesize a program that does the multi
  
   $./gp -n 20 -t 50000000 -i 10 -H 30
 
-
 * Instructions of Virtual Machine
 
-MOVE   x y   - put the value of y in x
-MOVI   x num - put the value num in x
-ADD    x y   - adds the value of y at x
-SUBI   x num - decreases the value num at x
-JUMPZ  x pc  - if x value is zero, jump to instruction in position pc
-JUMP   pc    - jump to instruction in position  pc
-RET          - stop the program
+| instruction  | note                                                   |
+|--------------+--------------------------------------------------------|
+| MOVE   x y   | put the value of y in x                                |
+| MOVI   x num | put the value num in x                                 |
+| ADD    x y   | adds the value of y at x                               |
+| SUBI   x num | decreases the value num at x                           |
+| JUMPZ  x pc  | if x value is zero, jump to instruction in position pc |
+| JUMP   pc    | jump to instruction in position  pc                    |
+| RET          | stop the program                                       |
 
 * Example of output
 
