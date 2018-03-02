@@ -1,21 +1,21 @@
 This project is a little toy  in genetic programming. Basically we built a system that uses genetic programming to synthesize code into a tiny virtual machine. 
 
 To play you need of:
--> gcc
+- gcc
 
-Building
+* Building
 
 In the src directory, execute the command:
     $ make
 
-Testing
+* Testing
 
 Run without changes, the gp program try synthesize a program that does the multiplication of two integers. Note that the virtual machine has no instruction of multiplication. Use this command for see the program in action:
  
   $./gp -n 20 -t 50000000 -i 10 -H 30
 
 
-Instructions of Virtual Machine
+* Instructions of Virtual Machine
 
 MOVE   x y   - put the value of y in x
 MOVI   x num - put the value num in x
@@ -25,6 +25,20 @@ JUMPZ  x pc  - if x value is zero, jump to instruction in position pc
 JUMP   pc    - jump to instruction in position  pc
 RET          - stop the program
 
+* Example of output
 
+#+BEGIN_SRC 
+MOVE 2 0
+SUBI 1 1
+JUMPZ 1 8
+ADD 2 0
+JUMP 1
+MOVE 0 1
+JUMPZ 2 1
+MOVE 0 2
+RET
+#+END_SRC
+
+* Author
 Trumae <trumae@gmail.com>
 
