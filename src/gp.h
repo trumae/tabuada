@@ -28,18 +28,18 @@ extern char programname[1024];
    Funcoes definidas
 */
 
-inline Individuo *makeIndividuo ( int t );
-inline Individuo *makeIndividuoRand (int t);
-inline void freeIndividuo(Individuo *ind);
-inline void printIndividuo(FILE *file, Individuo *ind);
+Individuo *makeIndividuo ( int t );
+Individuo *makeIndividuoRand (int t);
+void freeIndividuo(Individuo *ind);
+void printIndividuo(FILE *file, Individuo *ind);
 
 
-inline Populacao *makePopulacao (int t, double txc, double txm);
-inline Populacao *makePopulacaoRand (int t, int tind, double txc, double txm);
-inline void freePopulacao(Populacao *p);
-inline void printPopulacao(FILE *file, Populacao *pop);
+Populacao *makePopulacao (int t, double txc, double txm);
+Populacao *makePopulacaoRand (int t, int tind, double txc, double txm);
+void freePopulacao(Populacao *p);
+void printPopulacao(FILE *file, Populacao *pop);
 
-inline double bloatfactor (int tam);
+double bloatfactor (int tam);
 
 #endif
 

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "gp.h"
 #include "machine.h"
 #include "fitmult.h"

@@ -25,11 +25,10 @@ typedef struct structmachine {
    Individuo *code;
 } statemachine;
 
-
-inline statemachine * makeStatemachine(Individuo *ind, int tm);
+statemachine * makeStatemachine(Individuo *ind, int tm);
 void executemachine(statemachine *st,int n);
-inline void freeStatemachine(statemachine *st);
-inline void printStatemachine(statemachine *st);
+void freeStatemachine(statemachine *st);
+void printStatemachine(statemachine *st);
 
 #endif
 
