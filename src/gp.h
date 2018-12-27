@@ -23,6 +23,9 @@ typedef struct structamb {
 
 
 extern char programname[1024];
+extern int tammaxestimado;
+extern void (*fitness)(Populacao *pop, int i1, int i2, int *champion, int *loser, int verb);
+
 
 /*
    Funcoes definidas
@@ -38,6 +41,9 @@ Populacao *makePopulacao (int t, double txc, double txm);
 Populacao *makePopulacaoRand (int t, int tind, double txc, double txm);
 void freePopulacao(Populacao *p);
 void printPopulacao(FILE *file, Populacao *pop);
+
+void initGP ();
+int torneio (Populacao *pop, void (*fitness)(Populacao *pop, int i1, int i2, int *champion, int *loser, int verb) , int verbose);
 
 double bloatfactor (int tam);
 

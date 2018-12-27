@@ -41,20 +41,6 @@ static double getFitExternal(Individuo *ind, int verbose){
   
   fclose(f);
 
-  /* chamada de programa externo - no linux deve ser com fork */
-  /*if ( (pid = fork()) == -1) {
-    fprintf(stderr, "Erro no fork\n");
-  } else 
-    if (pid == 0 ) { // processo filho 
-      if (verbose) fprintf(stdout, "Processo Filho - Exec programa %s\n", programname);
-      if( execlp(programname, programname, NULL) == -1) {
-	fprintf(stderr, "Erro no execlp\n");
-	exit(1);
-      }
-    }
-  if (verbose) fprintf(stdout, "Processo Pai - Esperando\n");
-  wait();*/
-
   strcpy(buffer, "./");
   strcat(buffer, programname);
   ret = system(buffer);

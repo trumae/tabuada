@@ -10,9 +10,11 @@
 #include "fitmult.h"
 #include "fitexternal.h"
 
-static int tammaxestimado;
+int tammaxestimado;
+void (*fitness)(Populacao *pop, int i1, int i2, int *champion, int *loser, int verb);
 
-inline Individuo *makeIndividuo ( int t ) {
+
+Individuo *makeIndividuo ( int t ) {
     Individuo *ind;
 
     ind = malloc(sizeof(Individuo));
@@ -23,7 +25,7 @@ inline Individuo *makeIndividuo ( int t ) {
 }
 
 
-inline Individuo *makeIndividuoRand (int t){
+Individuo *makeIndividuoRand (int t){
     int i;
     Individuo *ind;
     
@@ -37,12 +39,12 @@ inline Individuo *makeIndividuoRand (int t){
 }
 
 
-inline void freeIndividuo(Individuo *ind) {
+void freeIndividuo(Individuo *ind) {
    free(ind->data);
    free(ind);
 }
 
-inline void printIndividuo(FILE* file, Individuo *ind) {
+void printIndividuo(FILE* file, Individuo *ind) {
    int i;
    fprintf(file, "<");
    for(i = 0; i < ind->tam; i++) 
@@ -52,7 +54,7 @@ inline void printIndividuo(FILE* file, Individuo *ind) {
 
 
 
-inline Populacao *makePopulacao (int t, double txc, double txm){
+Populacao *makePopulacao (int t, double txc, double txm){
     Populacao *pop;
     
     if (t <= 4 ) {
@@ -68,7 +70,7 @@ inline Populacao *makePopulacao (int t, double txc, double txm){
     return pop;
 }
 
-inline Populacao *makePopulacaoRand (int t, int tind, double txc, double txm){
+Populacao *makePopulacaoRand (int t, int tind, double txc, double txm){
     Populacao *pop;
     int i;
     
@@ -80,7 +82,7 @@ inline Populacao *makePopulacaoRand (int t, int tind, double txc, double txm){
     return pop;
 }
 
-inline void freePopulacao(Populacao *p){
+void freePopulacao(Populacao *p){
    int i;
    
    for(i = 0; i < p->tam; i++)
@@ -90,7 +92,7 @@ inline void freePopulacao(Populacao *p){
    free(p);
 }
 
-inline void printPopulacao(FILE *file, Populacao *pop){
+ void printPopulacao(FILE *file, Populacao *pop){
    int i;
    
    fprintf(file,"<<< %d %f %f \n", pop->tam, pop->txcross, pop->txmut);
@@ -104,19 +106,19 @@ inline void printPopulacao(FILE *file, Populacao *pop){
 
 ///////////////////////////////////////
 
-inline double mysorteio(){
+double mysorteio(){
    double ret = (double) ((double) rand())/RAND_MAX;
    return ret;
 }
 
-inline int mysorteiounico(int tampop, int i1, int i2, int i3){
+int mysorteiounico(int tampop, int i1, int i2, int i3){
    int ret = rand() % tampop;
    while(ret == i1 || ret == i2 || ret == i3)
       ret = rand() % tampop;
    return ret;      
 }
 
-inline void crossover (const Individuo *ind1, const Individuo *ind2, const double txcross,
+void crossover (const Individuo *ind1, const Individuo *ind2, const double txcross,
 		Individuo **rind1, Individuo **rind2) {
     int i;
     int pcorte1 = rand() % (ind1->tam + 1);
@@ -142,7 +144,7 @@ inline void crossover (const Individuo *ind1, const Individuo *ind2, const doubl
 	    
 }
 
-inline void mutation(Individuo *ind, const double txmut){
+void mutation(Individuo *ind, const double txmut){
       int i;
       
       for(i = 0; i < ind->tam; i++){
@@ -202,150 +204,16 @@ int torneio (Populacao *pop, void (*fitness)(Populacao *pop, int i1, int i2, int
 }
 
 
-inline double bloatfactor (int tam) {
+double bloatfactor (int tam) {
    if ( tam <= tammaxestimado)
      return 1.0;
    else
      return ((double) tammaxestimado) / tam; 
 }
 
-void (*fitness)(Populacao *pop, int i1, int i2, int *champion, int *loser, int verb);
-
 void initGP () {
     srand(time(NULL));
     //fitness = fitnessmult;
     //fitness = fitnessinst;
 }
-
-
-
-
-/*****************************************************************************
-
-
-******************************************************************************/
-
-
-const char* program_name;
-
-
-void print_usage(FILE *stream, int exit_code){
-  fprintf(stream, "Usage: %s options\n", program_name);
-  fprintf(stream,
-	  "  -h   --help                     Display this usage information. \n"
-          "  -t   --tournament number        Number of tournamment (default 1000000)\n"
-	  "  -n   --population number        Length of Population (default 100)\n"
-          "  -i   --iniind number            Initial length of individual (default 40)\n"
-          "  -H   --tammaxestimado number    Max Length for bloat factor (default 10)\n"
-	  "  -c   --crossover number         Rate of crossover (default 0.9)\n"
-          "  -m   --mutation  number         Rate of mutation (default 0.01)\n"
-          "  -e   --extern                   Use external program (default = no)\n"
-          "  -p   --program name             Name of external program (default = fitextern)\n"
-          "  -v   --verbose                  Print verbose messages.\n");
-  exit(exit_code);
-}
-
-
-char programname[1024];
-
-int main(int argc, char **argv) {
-  int next_option, verbose = 0;
-  int i,r;
-  Populacao *pop;
-  Individuo *rind1;
-  Individuo *rind2;
-  int numtorn = 1000000;
-  int iniind = 40;
-  int tampop = 100;
-  double rcrossover = 0.9;
-  double rmutation = 0.01;
-  int useexternal = 0;
-
-  strcpy(programname, "fitextern");
-
-  tammaxestimado = 50;
-  fitness = fitnessmult;
-  //fitness = fitnessinst;
-  const char *short_options = "hvt:n:c:m:i:ep:H:";
-  const struct option long_options[] = {
-    {"help", 0, NULL, 'h'},
-    {"tournament", 1, NULL, 't'},
-    {"population", 1, NULL, 'n'},
-    {"iniind", 1, NULL, 'i'},
-    {"tammaxestimado", 1, NULL, 'H'},
-    {"crossover", 1, NULL, 'c'},
-    {"mutation", 1, NULL, 'm'},
-    {"extern", 0, NULL, 'e'},
-    {"program", 1, NULL, 'p'},
-    {"verbose", 0, NULL, 'v'},
-    {NULL, 0, NULL, 0}
-  };
-  program_name = argv[0];
-
-  do {
-    next_option = getopt_long(argc, argv, short_options, long_options, NULL);
-    switch (next_option) {
-    case 'h':
-      print_usage(stdout, 0);
-      break;
-    case 'v':
-      verbose = 1;
-      break;
-    case '?':  /* opcao invalida*/
-      print_usage(stderr, 1);
-      break;
-
-    case 't':
-      numtorn = atoi(optarg);
-      break;
-
-    case 'H':
-      tammaxestimado = atoi(optarg);
-      break;
-
-
-    case 'n':
-      tampop = atoi(optarg);
-      break;
-
-    case 'i':
-      iniind = atoi(optarg);
-      break;
-
-    case 'c':
-      rcrossover = atof(optarg);
-      break;
-
-    case 'm':
-      rmutation = atof(optarg);
-      break;
-
-    case 'e':
-      useexternal = 1;
-      break;
-
-    case 'p':
-      strncpy(programname, optarg, 1024);
-      break;
-
-
-    case -1:
-      break;
-    default:
-      abort();
-    }
-  } while (next_option != -1);
-  
-  if (useexternal) fitness = fitexternal;
-  initGP();
-  pop = makePopulacaoRand(tampop, iniind, rcrossover, rmutation);
-  
-  for(i = 0; i < numtorn; i++) 
-    r = torneio(pop, fitness, verbose);
-  
-  //printPopulacao(stdout, pop);
-  freePopulacao(pop);
-  return 0;
-}
-
 
