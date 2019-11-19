@@ -6,6 +6,98 @@
 
 * Genetic Programming 
 
+** Individuo
+
+#+NAME: TYPE_IND
+#+BEGIN_SRC C :results silent
+typedef struct structind {
+   int tam;
+   int *data;
+} Individuo ;
+#+END_SRC
+
+#+NAME: PRINTINDIVIDUO
+#+BEGIN_SRC C :results silent 
+inline void printIndividuo(FILE* file, Individuo *ind) {
+   int i;
+   fprintf(file, "<");
+   for(i = 0; i < ind->tam; i++) 
+      fprintf(file, "%d ", ind->data[i]);
+   fprintf(file, ">\n");
+}
+#+END_SRC
+
+*** Print Example
+
+#+NAME: PRINT_EXAMPLE
+#+BEGIN_SRC C :results silent :exports code 
+int d[4] = {1,2,4,5};
+Individuo ind = {.tam=4, .data=d};
+
+printIndividuo(stdout, &ind);
+#+END_SRC
+
+#+HEADER: :includes <stdio.h>
+#+BEGIN_SRC C :noweb yes :exports results
+<<TYPE_IND>>
+<<PRINTINDIVIDUO>>
+
+<<PRINT_EXAMPLE>>
+#+END_SRC
+
+#+RESULTS:
+: <1 2 4 5 >
+
+
+
+** Populacao
+
+#+NAME: TYPE_POP
+#+BEGIN_SRC C :results silent
+typedef struct structamb {
+  int tam;
+  double txcross;
+  double txmut;
+  Individuo **data;
+} Populacao;
+#+END_SRC
+
+
+#+NAME: TYPE_STRUCTS
+#+BEGIN_SRC C :results silent :exports none :tangle yes :noweb yes :main no
+<<TYPE_IND>>
+<<TYPE_POP>>
+#+END_SRC
+
+
+
+
+
+#+header: :var mystring="Sunday" :var myint=145 :var mydouble=3.14
+#+BEGIN_SRC C :exports both
+  printf ("mystring %s\n", mystring);
+  printf ("myint    %d\n", myint);
+  printf ("mydouble %g\n", mydouble);
+#+END_SRC
+
+#+RESULTS:
+| mystring | Sunday |
+| myint    |    145 |
+| mydouble |   3.14 |
+
+
+#+header: :var mystring="Sunday" :var myint=145 :var mydouble=3.14
+#+BEGIN_SRC C
+  printf ("mystring %s\n", mystring);
+  printf ("myint    %d\n", myint);
+#+END_SRC
+
+#+RESULTS:
+| mystring | Sunday |
+| myint    |    145 |
+
+
+
 * All together
 
 
