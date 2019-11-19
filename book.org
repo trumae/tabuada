@@ -1,8 +1,10 @@
 #+TITLE: Tabuada
 #+AUTHOR: Trumae da Ilha
-
+#+SETUPFILE: setup.config
 
 * Introduction
+
+* Genetic Programming 
 
 * All together
 
