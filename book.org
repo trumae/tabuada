@@ -9,44 +9,42 @@
 ** Individuo
 
 #+NAME: TYPE_IND
-#+BEGIN_SRC C :results silent
-typedef struct structind {
-   int tam;
-   int *data;
-} Individuo ;
+#+HEADER: :includes <vector>
+#+BEGIN_SRC cpp :results silent
+using Individuo = std::vector<int>;
 #+END_SRC
 
 #+NAME: PRINTINDIVIDUO
-#+BEGIN_SRC C :results silent 
-inline void printIndividuo(FILE* file, Individuo *ind) {
-   int i;
-   fprintf(file, "<");
-   for(i = 0; i < ind->tam; i++) 
-      fprintf(file, "%d ", ind->data[i]);
-   fprintf(file, ">\n");
+#+BEGIN_SRC cpp :results silent 
+void print(Individuo &ind) {
+   std::cout << "< ";
+   for(auto d : ind) 
+      std::cout << d << " ";
+   std::cout << ">";
 }
 #+END_SRC
 
 *** Print Example
 
 #+NAME: PRINT_EXAMPLE
-#+BEGIN_SRC C :results silent :exports code 
-int d[4] = {1,2,4,5};
-Individuo ind = {.tam=4, .data=d};
+#+BEGIN_SRC cpp :results silent :exports code 
+Individuo ind = {1,2,3,4};
 
-printIndividuo(stdout, &ind);
+print(ind);
 #+END_SRC
 
-#+HEADER: :includes <stdio.h>
-#+BEGIN_SRC C :noweb yes :exports results
+#+HEADER: :includes <iostream> <vector>
+#+BEGIN_SRC cpp :noweb yes :exports results :main no
 <<TYPE_IND>>
 <<PRINTINDIVIDUO>>
 
+int main() {
 <<PRINT_EXAMPLE>>
+}
 #+END_SRC
 
 #+RESULTS:
-: <1 2 4 5 >
+: < 1 2 3 4 >
 
 
 
