@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-19 Tue 15:26 -->
+<!-- 2019-11-19 Tue 16:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tabuada</title>
@@ -243,88 +243,81 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb6f48bc">1. Introduction</a></li>
-<li><a href="#org5f5132c">2. Genetic Programming</a>
+<li><a href="#org701d454">1. Introduction</a></li>
+<li><a href="#org4450831">2. Genetic Programming</a>
 <ul>
-<li><a href="#org2f36dc7">2.1. Individuo</a>
-<ul>
-<li><a href="#orgb6f0288">2.1.1. Print Example</a></li>
+<li><a href="#orgf087883">2.1. Individuo</a></li>
+<li><a href="#org93a8782">2.2. Populacao</a></li>
 </ul>
 </li>
-<li><a href="#orgc1bf046">2.2. Populacao</a></li>
-</ul>
-</li>
-<li><a href="#orgdb7c268">3. All together</a></li>
+<li><a href="#org19d4607">3. Examples orgmode</a></li>
+<li><a href="#org9993b51">4. All together</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgb6f48bc" class="outline-2">
-<h2 id="orgb6f48bc"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org701d454" class="outline-2">
+<h2 id="org701d454"><span class="section-number-2">1</span> Introduction</h2>
 </div>
 
-<div id="outline-container-org5f5132c" class="outline-2">
-<h2 id="org5f5132c"><span class="section-number-2">2</span> Genetic Programming</h2>
+<div id="outline-container-org4450831" class="outline-2">
+<h2 id="org4450831"><span class="section-number-2">2</span> Genetic Programming</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org2f36dc7" class="outline-3">
-<h3 id="org2f36dc7"><span class="section-number-3">2.1</span> Individuo</h3>
+<div id="outline-container-orgf087883" class="outline-3">
+<h3 id="orgf087883"><span class="section-number-3">2.1</span> Individuo</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
-<pre class="src src-C" id="org597495b"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">structind</span> {
-   <span style="color: #228b22;">int</span> <span style="color: #a0522d;">tam</span>;
-   <span style="color: #228b22;">int</span> *<span style="color: #a0522d;">data</span>;
-} <span style="color: #228b22;">Individuo</span> ;
+<pre class="src src-cpp" id="org237c94b"><span style="color: #a020f0;">using</span> <span style="color: #228b22;">Individuo</span> = <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">vector</span>&lt;<span style="color: #228b22;">int</span>&gt;;
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org0c08259"><span style="color: #a020f0;">inline</span> <span style="color: #228b22;">void</span> <span style="color: #0000ff;">printIndividuo</span>(<span style="color: #228b22;">FILE</span>* <span style="color: #a0522d;">file</span>, <span style="color: #228b22;">Individuo</span> *<span style="color: #a0522d;">ind</span>) {
-   <span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span>;
-   fprintf(file, <span style="color: #8b2252;">"&lt;"</span>);
-   <span style="color: #a020f0;">for</span>(i = 0; i &lt; ind-&gt;tam; i++) 
-      fprintf(file, <span style="color: #8b2252;">"%d "</span>, ind-&gt;data[i]);
-   fprintf(file, <span style="color: #8b2252;">"&gt;\n"</span>);
+<pre class="src src-cpp" id="org95ad217"><span style="color: #228b22;">void</span> <span style="color: #0000ff;">print</span>(<span style="color: #228b22;">Individuo</span> &amp;<span style="color: #a0522d;">ind</span>) {
+   <span style="color: #008b8b;">std</span>::cout &lt;&lt; <span style="color: #8b2252;">"&lt; "</span>;
+   <span style="color: #a020f0;">for</span>(<span style="color: #a020f0;">auto</span> <span style="color: #a0522d;">d</span> : ind) 
+      <span style="color: #008b8b;">std</span>::cout &lt;&lt; d &lt;&lt; <span style="color: #8b2252;">" "</span>;
+   <span style="color: #008b8b;">std</span>::cout &lt;&lt; <span style="color: #8b2252;">"&gt;"</span>;
 }
 </pre>
 </div>
-</div>
 
-<div id="outline-container-orgb6f0288" class="outline-4">
-<h4 id="orgb6f0288"><span class="section-number-4">2.1.1</span> Print Example</h4>
-<div class="outline-text-4" id="text-2-1-1">
+
 <div class="org-src-container">
-<pre class="src src-C" id="org39f1023"><span style="color: #228b22;">int</span> <span style="color: #a0522d;">d</span>[4] = {1,2,4,5};
-<span style="color: #228b22;">Individuo</span> <span style="color: #a0522d;">ind</span> = {.tam=4, .data=d};
+<pre class="src src-cpp" id="orgd4b703d"><span style="color: #228b22;">Individuo</span> <span style="color: #a0522d;">ind</span> = {1,2,3,4};
 
-<span style="color: #0000ff;">printIndividuo</span>(stdout, &amp;ind);
+print(ind);
 </pre>
 </div>
 
 <pre class="example">
-&lt;1 2 4 5 &gt;
+&lt; 1 2 3 4 &gt;
 
 </pre>
 </div>
 </div>
-</div>
 
 
 
-<div id="outline-container-orgc1bf046" class="outline-3">
-<h3 id="orgc1bf046"><span class="section-number-3">2.2</span> Populacao</h3>
+<div id="outline-container-org93a8782" class="outline-3">
+<h3 id="org93a8782"><span class="section-number-3">2.2</span> Populacao</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
-<pre class="src src-C" id="org234e57a"><span style="color: #a020f0;">typedef</span> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">structamb</span> {
-  <span style="color: #228b22;">int</span> <span style="color: #a0522d;">tam</span>;
+<pre class="src src-cpp" id="orgf477ba2"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">Populacao</span> {
   <span style="color: #228b22;">double</span> <span style="color: #a0522d;">txcross</span>;
   <span style="color: #228b22;">double</span> <span style="color: #a0522d;">txmut</span>;
-  <span style="color: #228b22;">Individuo</span> **<span style="color: #a0522d;">data</span>;
-} <span style="color: #228b22;">Populacao</span>;
+  <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">vector</span>&lt;Individuo&gt; <span style="color: #a0522d;">data</span>;
+};
 </pre>
+</div>
+</div>
+</div>
 </div>
 
 
+<div id="outline-container-org19d4607" class="outline-2">
+<h2 id="org19d4607"><span class="section-number-2">3</span> Examples orgmode</h2>
+<div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-C">printf (<span style="color: #8b2252;">"mystring %s\n"</span>, mystring);
 printf (<span style="color: #8b2252;">"myint    %d\n"</span>, myint);
@@ -366,17 +359,16 @@ printf (<span style="color: #8b2252;">"myint    %d\n"</span>, myint);
 </div>
 </div>
 </div>
-</div>
 
 
 
-<div id="outline-container-orgdb7c268" class="outline-2">
-<h2 id="orgdb7c268"><span class="section-number-2">3</span> All together</h2>
+<div id="outline-container-org9993b51" class="outline-2">
+<h2 id="org9993b51"><span class="section-number-2">4</span> All together</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Trumae da Ilha</p>
-<p class="date">Created: 2019-11-19 Tue 15:26</p>
+<p class="date">Created: 2019-11-19 Tue 16:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
