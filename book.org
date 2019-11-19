@@ -24,7 +24,6 @@ void print(Individuo &ind) {
 }
 #+END_SRC
 
-*** Print Example
 
 #+NAME: PRINT_EXAMPLE
 #+BEGIN_SRC cpp :results silent :exports code 
@@ -51,19 +50,20 @@ int main() {
 ** Populacao
 
 #+NAME: TYPE_POP
-#+BEGIN_SRC C :results silent
-typedef struct structamb {
-  int tam;
+#+BEGIN_SRC cpp :results silent
+struct Populacao {
   double txcross;
   double txmut;
-  Individuo **data;
-} Populacao;
+  std::vector<Individuo> data;
+};
 #+END_SRC
 
 
 #+NAME: TYPE_STRUCTS
-#+BEGIN_SRC C :results silent :exports none :tangle yes :noweb yes :main no
+#+HEADERS: :includes <iostream> <vector>
+#+BEGIN_SRC cpp :results silent :exports none :tangle yes :noweb yes :main no
 <<TYPE_IND>>
+<<PRINTINDIVIDUO>>
 <<TYPE_POP>>
 #+END_SRC
 
