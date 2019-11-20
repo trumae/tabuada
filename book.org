@@ -4,19 +4,36 @@
 
 * Introduction
 
-* Genetic Programming 
+** Random number generator
 
+*intRand* is a thread safe random number generator
+
+#+NAME: INTRAND
+#+BEGIN_SRC cpp :results silent
+int intRand(const int & min, const int & max) {
+    static thread_local std::mt19937 generator;
+    std::uniform_int_distribution<int> distribution(min,max);
+    return distribution(generator);
+}
+#+END_SRC
+
+* Genetic Programming 
 ** Individuo
+
+Let's represent an *Individual* as a vector of integer.
 
 #+NAME: TYPE_IND
 #+HEADER: :includes <vector>
 #+BEGIN_SRC cpp :results silent
-using Individuo = std::vector<int>;
+using Individual = std::vector<int>;
 #+END_SRC
 
-#+NAME: PRINTINDIVIDUO
+The function *print* can show the content of an *Individual* on 
+*stdout*.
+
+#+NAME: PRINTINDIVIDUAL
 #+BEGIN_SRC cpp :results silent 
-void print(Individuo &ind) {
+void print(Individual &ind) {
    std::cout << "< ";
    for(auto d : ind) 
       std::cout << d << " ";
@@ -24,18 +41,42 @@ void print(Individuo &ind) {
 }
 #+END_SRC
 
+#+NAME: MAKERANDINDIVIDUAL
+#+BEGIN_SRC cpp :results silent
+Individual makeRandIndividual (int t, int min, int max){
+    Individual ind = {};
+
+    for(int i = 0; i < t; i++)
+       ind.push_back(intRand(min, max));
+
+    return ind;
+}
+#+END_SRC
+
+*** Print example
 
 #+NAME: PRINT_EXAMPLE
 #+BEGIN_SRC cpp :results silent :exports code 
-Individuo ind = {1,2,3,4};
+Individual ind = {1,2,3,4};
+Individual randind = makeRandIndividual(6,1,10);
 
 print(ind);
+std::cout << std::endl;
+print(randind);
 #+END_SRC
 
-#+HEADER: :includes <iostream> <vector>
-#+BEGIN_SRC cpp :noweb yes :exports results :main no
+#+NAME: PREAMBLE1
+#+HEADER: :includes <iostream> <vector> <random>
+#+BEGIN_SRC cpp :results silent :noweb yes :main no
+<<INTRAND>>
 <<TYPE_IND>>
-<<PRINTINDIVIDUO>>
+<<PRINTINDIVIDUAL>>
+<<MAKERANDINDIVIDUAL>>
+#+END_SRC
+
+#+HEADER: :includes <iostream> <vector> <random>
+#+BEGIN_SRC cpp :noweb yes :exports results :main no :results output
+<<PREAMBRE1>>
 
 int main() {
 <<PRINT_EXAMPLE>>
@@ -43,9 +84,6 @@ int main() {
 #+END_SRC
 
 #+RESULTS:
-: < 1 2 3 4 >
-
-
 
 ** Populacao
 
@@ -59,6 +97,8 @@ struct Populacao {
 #+END_SRC
 
 
+
+
 #+NAME: TYPE_STRUCTS
 #+HEADERS: :includes <iostream> <vector>
 #+BEGIN_SRC cpp :results silent :exports none :tangle yes :noweb yes :main no
@@ -66,7 +106,6 @@ struct Populacao {
 <<PRINTINDIVIDUO>>
 <<TYPE_POP>>
 #+END_SRC
-
 
 
 * Examples orgmode
@@ -95,6 +134,12 @@ struct Populacao {
 | myint    |    145 |
 
 
+#+BEGIN_SRC lisp
+(princ (+ 3 4))
+#+END_SRC
+
+#+RESULTS:
+: 7
 
 * All together
 

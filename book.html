@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-19 Tue 16:00 -->
+<!-- 2019-11-19 Tue 19:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tabuada</title>
@@ -243,37 +243,73 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org701d454">1. Introduction</a></li>
-<li><a href="#org4450831">2. Genetic Programming</a>
+<li><a href="#orgabdc022">1. Introduction</a>
 <ul>
-<li><a href="#orgf087883">2.1. Individuo</a></li>
-<li><a href="#org93a8782">2.2. Populacao</a></li>
+<li><a href="#org0b7a855">1.1. Random number generator</a></li>
 </ul>
 </li>
-<li><a href="#org19d4607">3. Examples orgmode</a></li>
-<li><a href="#org9993b51">4. All together</a></li>
+<li><a href="#orge9ae27d">2. Genetic Programming</a>
+<ul>
+<li><a href="#org11b118d">2.1. Individuo</a>
+<ul>
+<li><a href="#orgf42e62a">2.1.1. Print example</a></li>
+</ul>
+</li>
+<li><a href="#org1abfce3">2.2. Populacao</a></li>
+</ul>
+</li>
+<li><a href="#org4fba6a2">3. Examples orgmode</a></li>
+<li><a href="#orga9af91b">4. All together</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org701d454" class="outline-2">
-<h2 id="org701d454"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-orgabdc022" class="outline-2">
+<h2 id="orgabdc022"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org0b7a855" class="outline-3">
+<h3 id="org0b7a855"><span class="section-number-3">1.1</span> Random number generator</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<b>intRand</b> is a thread safe random number generator
+</p>
+
+<div class="org-src-container">
+<pre class="src src-cpp" id="org6016883"><span style="color: #228b22;">int</span> <span style="color: #0000ff;">intRand</span>(<span style="color: #a020f0;">const</span> <span style="color: #228b22;">int</span> &amp; <span style="color: #a0522d;">min</span>, <span style="color: #a020f0;">const</span> <span style="color: #228b22;">int</span> &amp; <span style="color: #a0522d;">max</span>) {
+    <span style="color: #a020f0;">static</span> <span style="color: #a020f0;">thread_local</span> <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">mt19937</span> <span style="color: #a0522d;">generator</span>;
+    <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">uniform_int_distribution</span>&lt;<span style="color: #228b22;">int</span>&gt; <span style="color: #a0522d;">distribution</span>(min,max);
+    <span style="color: #a020f0;">return</span> distribution(generator);
+}
+</pre>
+</div>
+</div>
+</div>
 </div>
 
-<div id="outline-container-org4450831" class="outline-2">
-<h2 id="org4450831"><span class="section-number-2">2</span> Genetic Programming</h2>
+<div id="outline-container-orge9ae27d" class="outline-2">
+<h2 id="orge9ae27d"><span class="section-number-2">2</span> Genetic Programming</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgf087883" class="outline-3">
-<h3 id="orgf087883"><span class="section-number-3">2.1</span> Individuo</h3>
+<div id="outline-container-org11b118d" class="outline-3">
+<h3 id="org11b118d"><span class="section-number-3">2.1</span> Individuo</h3>
 <div class="outline-text-3" id="text-2-1">
+<p>
+Let's represent an <b>Individual</b> as a vector of integer.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-cpp" id="org237c94b"><span style="color: #a020f0;">using</span> <span style="color: #228b22;">Individuo</span> = <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">vector</span>&lt;<span style="color: #228b22;">int</span>&gt;;
+<pre class="src src-cpp" id="org6031ad5"><span style="color: #a020f0;">using</span> <span style="color: #228b22;">Individual</span> = <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">vector</span>&lt;<span style="color: #228b22;">int</span>&gt;;
 </pre>
 </div>
 
+<p>
+The function <b>print</b> can show the content of an <b>Individual</b> on 
+<b>stdout</b>.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-cpp" id="org95ad217"><span style="color: #228b22;">void</span> <span style="color: #0000ff;">print</span>(<span style="color: #228b22;">Individuo</span> &amp;<span style="color: #a0522d;">ind</span>) {
+<pre class="src src-cpp" id="org8461eb8"><span style="color: #228b22;">void</span> <span style="color: #0000ff;">print</span>(<span style="color: #228b22;">Individual</span> &amp;<span style="color: #a0522d;">ind</span>) {
    <span style="color: #008b8b;">std</span>::cout &lt;&lt; <span style="color: #8b2252;">"&lt; "</span>;
    <span style="color: #a020f0;">for</span>(<span style="color: #a020f0;">auto</span> <span style="color: #a0522d;">d</span> : ind) 
       <span style="color: #008b8b;">std</span>::cout &lt;&lt; d &lt;&lt; <span style="color: #8b2252;">" "</span>;
@@ -282,28 +318,46 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-
 <div class="org-src-container">
-<pre class="src src-cpp" id="orgd4b703d"><span style="color: #228b22;">Individuo</span> <span style="color: #a0522d;">ind</span> = {1,2,3,4};
+<pre class="src src-cpp" id="org43bb43d"><span style="color: #228b22;">Individual</span> <span style="color: #0000ff;">makeRandIndividual</span> (<span style="color: #228b22;">int</span> <span style="color: #a0522d;">t</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">min</span>, <span style="color: #228b22;">int</span> <span style="color: #a0522d;">max</span>){
+    <span style="color: #228b22;">Individual</span> <span style="color: #a0522d;">ind</span> = {};
+
+    <span style="color: #a020f0;">for</span>(<span style="color: #228b22;">int</span> <span style="color: #a0522d;">i</span> = 0; i &lt; t; i++)
+       ind.push_back(intRand(min, max));
+
+    <span style="color: #a020f0;">return</span> ind;
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf42e62a" class="outline-4">
+<h4 id="orgf42e62a"><span class="section-number-4">2.1.1</span> Print example</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<div class="org-src-container">
+<pre class="src src-cpp" id="org0bfed30"><span style="color: #228b22;">Individual</span> <span style="color: #a0522d;">ind</span> = {1,2,3,4};
+<span style="color: #228b22;">Individual</span> <span style="color: #a0522d;">randind</span> = makeRandIndividual(6,1,10);
 
 print(ind);
+printf(<span style="color: #8b2252;">"\n"</span>);
+print(randind);
 </pre>
 </div>
 
 <pre class="example">
 &lt; 1 2 3 4 &gt;
+&lt; 9 2 10 9 2 10 &gt;
 
 </pre>
 </div>
 </div>
+</div>
 
-
-
-<div id="outline-container-org93a8782" class="outline-3">
-<h3 id="org93a8782"><span class="section-number-3">2.2</span> Populacao</h3>
+<div id="outline-container-org1abfce3" class="outline-3">
+<h3 id="org1abfce3"><span class="section-number-3">2.2</span> Populacao</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
-<pre class="src src-cpp" id="orgf477ba2"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">Populacao</span> {
+<pre class="src src-cpp" id="org7337cf8"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">Populacao</span> {
   <span style="color: #228b22;">double</span> <span style="color: #a0522d;">txcross</span>;
   <span style="color: #228b22;">double</span> <span style="color: #a0522d;">txmut</span>;
   <span style="color: #008b8b;">std</span>::<span style="color: #228b22;">vector</span>&lt;Individuo&gt; <span style="color: #a0522d;">data</span>;
@@ -315,8 +369,10 @@ print(ind);
 </div>
 
 
-<div id="outline-container-org19d4607" class="outline-2">
-<h2 id="org19d4607"><span class="section-number-2">3</span> Examples orgmode</h2>
+
+
+<div id="outline-container-org4fba6a2" class="outline-2">
+<h2 id="org4fba6a2"><span class="section-number-2">3</span> Examples orgmode</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-C">printf (<span style="color: #8b2252;">"mystring %s\n"</span>, mystring);
@@ -357,18 +413,22 @@ printf (<span style="color: #8b2252;">"mydouble %g\n"</span>, mydouble);
 printf (<span style="color: #8b2252;">"myint    %d\n"</span>, myint);
 </pre>
 </div>
+
+
+<div class="org-src-container">
+<pre class="src src-lisp">(princ (+ 3 4))
+</pre>
 </div>
 </div>
+</div>
 
-
-
-<div id="outline-container-org9993b51" class="outline-2">
-<h2 id="org9993b51"><span class="section-number-2">4</span> All together</h2>
+<div id="outline-container-orga9af91b" class="outline-2">
+<h2 id="orga9af91b"><span class="section-number-2">4</span> All together</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Trumae da Ilha</p>
-<p class="date">Created: 2019-11-19 Tue 16:00</p>
+<p class="date">Created: 2019-11-19 Tue 19:45</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
